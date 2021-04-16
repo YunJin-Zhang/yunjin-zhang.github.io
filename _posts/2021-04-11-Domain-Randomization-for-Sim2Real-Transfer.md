@@ -43,18 +43,18 @@ DA与DR都是非监督的。与需要相当真实数据样本以获得分布的D
 
 ## What is Domain Randomization?
 
-为了使得定义更加统括，将那个我们了解其全部的环境叫做**source domain**，将那个我们想把模型迁移至其中的环境叫做**target domain**。我们在source domain中进行训练。我们可控制配置为$\xi$ 的source domain$e_\xi $中的随机化参数集$N$ ，其配置从一随机化空间中采样，$\xi\in \Xi \subset \mathbb{R}^N$ 。
+为了使得定义更加统括，将那个我们了解其全部的环境叫做**source domain**，将那个我们想把模型迁移至其中的环境叫做**target domain**。我们在source domain中进行训练。我们可控制配置为$$\xi$$ 的source domain$$e_\xi $$中的随机化参数集$$N$$ ，其配置从一随机化空间中采样，$$\xi\in \Xi \subset \mathbb{R}^N$$ 。
 
-在策略训练过程中，episodes从带有随机化的source domain中采集。因此，此策略将会运行在一系列环境当中，并且学会泛化。训练策略参数$\theta $以最大化期望回报$R(.)$在一个配置的分布上的在平均值：
+在策略训练过程中，episodes从带有随机化的source domain中采集。因此，此策略将会运行在一系列环境当中，并且学会泛化。训练策略参数$$\theta $$以最大化期望回报$$R(.)$$在一个配置的分布上的在平均值：
 
 $$
 \theta^*=argmax_\theta \mathbb{E}_{\xi \sim \Xi}[\mathbb{E}_{\pi_\theta,\tau \sim e_\xi}[R(\tau)]]
 $$
-其中$\tau_\xi$ 是在一个根据$\xi $来随机化的source domain中收集到的轨迹。根据这种方式，*“source和 target domains间的差异就可以根据在source domain中的变异性来建模。”*[Peng et al. 2018](https://arxiv.org/abs/1710.06537)
+其中$$\tau_\xi$$ 是在一个根据$$\xi $$来随机化的source domain中收集到的轨迹。根据这种方式，*“source和 target domains间的差异就可以根据在source domain中的变异性来建模。”*[Peng et al. 2018](https://arxiv.org/abs/1710.06537)
 
 ## Uniform Domain Randomization
 
-DR的最初形式[Tobin et al, 2017](https://arxiv.org/abs/1703.06907)[Sadeghi et al. 2016](https://arxiv.org/pdf/1611.04201.pdf)中，每个随机化参数$\xi_i$ 由一个区间来限制，$\xi\in[\xi_i^{low},\xi_i^{high}] ，i=1,...,N $每个参数都是在此区间内均匀采样的。
+DR的最初形式[Tobin et al, 2017](https://arxiv.org/abs/1703.06907)[Sadeghi et al. 2016](https://arxiv.org/pdf/1611.04201.pdf)中，每个随机化参数$$\xi_i$$ 由一个区间来限制，$$\xi\in[\xi_i^{low},\xi_i^{high}] ，i=1,...,N $$每个参数都是在此区间内均匀采样的。
 
 这些随机化参数可控制景象的外观，包括但不限于以下这些（如图2）.一个在模拟的、随机化的图象上训练的模型能够迁移至真实的、非随机化的图象上。
 
@@ -84,16 +84,16 @@ DR的最初形式[Tobin et al, 2017](https://arxiv.org/abs/1703.06907)[Sadeghi e
 
 ### DR as Optimization
 
-有一种观点[Vuong, et al, 2019](https://arxiv.org/abs/1903.11774)是将DR中的learning随机化参数视为双层优化bilevel optimization。假设我们现在知道真实环境$e_{real}$ 并且随机化配置是从参数化分布$\phi$，$\xi\sim P_{\phi}(\xi)$ 中采样的，我们想学习一个可在$e_{real}$ 中获得最好表现的分布，策略$\pi_{\theta} $就是在此分布上进行训练的：
+有一种观点[Vuong, et al, 2019](https://arxiv.org/abs/1903.11774)是将DR中的learning随机化参数视为双层优化bilevel optimization。假设我们现在知道真实环境$$e_{real}$$ 并且随机化配置是从参数化分布$$\phi$$，$$\xi\sim P_{\phi}(\xi)$$ 中采样的，我们想学习一个可在$$e_{real}$$ 中获得最好表现的分布，策略$$\pi_{\theta} $$就是在此分布上进行训练的：
 
 $$
 \phi^*=argmin_\phi \mathcal{L}(\pi_{\theta^*(\phi)};e_{real}) 
 
 where \theta^*(\phi)=argmin_\theta\mathbb{E}_{\xi \sim P_\phi(\xi)}[\mathcal(\pi_\theta;e_\xi)]
 $$
-其中$\mathcal{L}(\pi;e)$ 是策略$\pi$ 在环境$e $中进行评估的损失函数。
+其中$$\mathcal{L}(\pi;e)$$ 是策略$$\pi$$ 在环境$$e $$中进行评估的损失函数。
 
-虽然随机化范围是从均匀DR中手动选择的，但它常常包含domain knowledge和基于迁移性能的数轮trial-and-error调整。本质上，这是一个对于最优$\mathcal{L}(\pi_{\theta^*(\phi)};e_{real}) $的$\phi $的手动优化调整过程。
+虽然随机化范围是从均匀DR中手动选择的，但它常常包含domain knowledge和基于迁移性能的数轮trial-and-error调整。本质上，这是一个对于最优$$\mathcal{L}(\pi_{\theta^*(\phi)};e_{real}) $$的$$\phi $$的手动优化调整过程。
 
 下一章节的Guided DR就是由本节观点展开的，目的是去做自动bilevel优化以及学习最好的参数分布。
 
@@ -111,34 +111,34 @@ Vanilla DR假设我们并不知道真实数据，因此随机化配置的采样�
 
 ### Optimization for Task Performance
 
-假设我们训练了一个带有不同随机化参数$\xi \sim P_{\phi}(\xi) $的策略群，其中$P_\xi $是参数为$\phi$ 的关于$\xi $的分布。然后我们决定在target domain中的downstream task上尝试每一个策略，以获得反馈。这种反馈告诉我们配置$\xi $有多么好，以及提供优化$\phi$ 的信号。
+假设我们训练了一个带有不同随机化参数$$\xi \sim P_{\phi}(\xi) $$的策略群，其中$$P_\xi $$是参数为$$\phi$$ 的关于$$\xi $$的分布。然后我们决定在target domain中的downstream task上尝试每一个策略，以获得反馈。这种反馈告诉我们配置$$\xi $$有多么好，以及提供优化$$\phi$$ 的信号。
 
 AutoAugment[Cubuk, et al. 2018](https://arxiv.org/abs/1805.09501)的灵感来源于[NAS](https://ai.google/research/pubs/pub45826)，它将图像分类的学习最好数据提升操作的问题构造成了一个RL问题。请注意，AutoAugment不是为了sim2real迁移而被提出的，但是通过task performance进入到了DR guided的分类当中。单个的augmentation configuration在evaluation set上进行测试，性能的改善被用作reward以训练一个PPO policy。此策略输出对于不同数据集的不同augmentation strategies；比如，对于CIFAR-10，AutoAugment主要挑选出基于颜色的变换，然而对于ImageNet它更倾向于基于几何的。
 
-[Ruiz (2019) ](https://arxiv.org/abs/1810.02513)研究了在RL问题中的将task feedback视作reward的问题，并提出了一个基于RL的方法，叫做“learning to simulate”，以调整\xi 。使用主要任务的验证集上的性能度量以训练一个策略，这个策略将预测$\xi$ ，并被建模为多变量高斯分布。总之，这个idea与AutoAugment很相似，都将NAS应用于data generation上。根据他们所做的实验，即使主要任务模型是不收敛的，它仍可以为data generation策略提供一个合理的信号。
+[Ruiz (2019) ](https://arxiv.org/abs/1810.02513)研究了在RL问题中的将task feedback视作reward的问题，并提出了一个基于RL的方法，叫做“learning to simulate”，以调整\xi 。使用主要任务的验证集上的性能度量以训练一个策略，这个策略将预测$$\xi$$ ，并被建模为多变量高斯分布。总之，这个idea与AutoAugment很相似，都将NAS应用于data generation上。根据他们所做的实验，即使主要任务模型是不收敛的，它仍可以为data generation策略提供一个合理的信号。
 
 ![img](/assets/img/typora-user-images/d4725d48-a8e6-4c53-985a-7854235592d3.png)
 
-进化算法是另一种可行的方法，其中feedback被视为guiding 进化的fitness[Yu et al, 2019](https://openreview.net/forum?id=H1g6osRcFQ)。在这项研究中，当fitness是target环境中的$\xi$-conditional 策略的性能时，他们使用[CMA-ES](https://en.wikipedia.org/wiki/CMA-ES)（协方差矩阵适应进化策略covariance matrix adaption evolution strategy）。在附录当中，他们将CMA-ES与其他建模$\xi $动态的方法进行了比较，包括贝叶斯优化或者神经网络。主要的论点是，这些方法都不如CMA-ES稳定，并且样本效率也不如。有趣的是，当把$P(\xi) $建模为神经网络时，LSTM的表现远远超过了FF。
+进化算法是另一种可行的方法，其中feedback被视为guiding 进化的fitness[Yu et al, 2019](https://openreview.net/forum?id=H1g6osRcFQ)。在这项研究中，当fitness是target环境中的$$\xi$$-conditional 策略的性能时，他们使用[CMA-ES](https://en.wikipedia.org/wiki/CMA-ES)（协方差矩阵适应进化策略covariance matrix adaption evolution strategy）。在附录当中，他们将CMA-ES与其他建模$$\xi $$动态的方法进行了比较，包括贝叶斯优化或者神经网络。主要的论点是，这些方法都不如CMA-ES稳定，并且样本效率也不如。有趣的是，当把$$P(\xi) $$建模为神经网络时，LSTM的表现远远超过了FF。
 
-一些人认为，sim2real gap是appearance gap与content gap的结合；例如，大多数灵感来源于GAN的DA模型都关注appearance gap。Meta-Sim[Kar, et al. 2019](https://arxiv.org/abs/1904.11621)的主要目的是通过产生特定于任务的、合成的synthetic数据集来缩小content gap。在这种情况下，synthetic scenes是通过具有不同性质的对象的层级以及对象间的关系来参数化的（例如，位置，颜色等）这种层级由一个类似于结构DR(SDR[Prakash et al., 2018](https://arxiv.org/abs/1810.10093))的概率情景语法probabilistic scene grammar来描述的，并且我们假设它之前就是已知的。训练模型$G $以提升情景性质分布scene properties $s$：
+一些人认为，sim2real gap是appearance gap与content gap的结合；例如，大多数灵感来源于GAN的DA模型都关注appearance gap。Meta-Sim[Kar, et al. 2019](https://arxiv.org/abs/1904.11621)的主要目的是通过产生特定于任务的、合成的synthetic数据集来缩小content gap。在这种情况下，synthetic scenes是通过具有不同性质的对象的层级以及对象间的关系来参数化的（例如，位置，颜色等）这种层级由一个类似于结构DR(SDR[Prakash et al., 2018](https://arxiv.org/abs/1810.10093))的概率情景语法probabilistic scene grammar来描述的，并且我们假设它之前就是已知的。训练模型$$G $$以提升情景性质分布scene properties $$s$$：
 
-1. 首先学习先验知识：预训练$G$ 以学习恒等函数$G(s)=s$ ;
-2. 最小化真实数据分布和模拟数据分布间的MMD损失。它包括不可微分渲染中的反向传播。这篇论文通过扰动$G(s) $的属性来从数据上计算损失；
+1. 首先学习先验知识：预训练$$G$$ 以学习恒等函数$$G(s)=s$$ ;
+2. 最小化真实数据分布和模拟数据分布间的MMD损失。它包括不可微分渲染中的反向传播。这篇论文通过扰动$$G(s) $$的属性来从数据上计算损失；
 3. 在合成数据上进行训练时，最小化REINFORCE任务损失，但在真实数据上进行评估。
 
 不幸的是，此方法族并不适合sim2real。无论是RL策略还是EA模型都需要大量真是样本。将真实机器人上的实时反馈集加入到训练回环中是非常昂贵的。计算资源和实时数据集的trade-off取决于任务类型。
 
 ### Match Real Data Distribution
 
-理统真实数据以引导DR很大程度上类似于进行系统识别或DA。DA背后的核心观点就是改善合成数据以匹配真实数据分布。在真实数据引导的DR中，我们希望学习随机化参数$\xi$ ，它使得模拟器中的状态分布接近真实世界中的状态分布。
+理统真实数据以引导DR很大程度上类似于进行系统识别或DA。DA背后的核心观点就是改善合成数据以匹配真实数据分布。在真实数据引导的DR中，我们希望学习随机化参数$$\xi$$ ，它使得模拟器中的状态分布接近真实世界中的状态分布。
 
-SimOpt[Chebotar et al, 2019](https://arxiv.org/abs/1810.05687)首先在一个初始随机化分布$P_\phi(\xi)$ 的基础上进行训练，得到策略$\pi_{\theta,P_\phi} $。然后，在模拟器和实际机器人上都部署应用此策略以分别收集轨迹$\tau_\xi$ 和$\tau_{real}$ 。优化目标是最小化sim轨迹和real轨迹之间的差异：
+SimOpt[Chebotar et al, 2019](https://arxiv.org/abs/1810.05687)首先在一个初始随机化分布$$P_\phi(\xi)$$ 的基础上进行训练，得到策略$$\pi_{\theta,P_\phi} $$。然后，在模拟器和实际机器人上都部署应用此策略以分别收集轨迹$$\tau_\xi$$ 和$$\tau_{real}$$ 。优化目标是最小化sim轨迹和real轨迹之间的差异：
 
 $$
 \phi^*=argmin_\phi\mathbb{E}_{\xi\sim P_\phi(\xi)}[\mathbb{E}_{\pi_\theta, P_\phi(\xi)}[D(\tau_{sim},\tau_{real})]]
 $$
-其中$D(.)$ 是一个基于轨迹差异的度量。就像“Learning to simulate”论文，SimOpt也必须解决如何在不可微分模拟器中进行梯度传播的棘手问题。它使用了一个叫做[ relative entropy policy search](https://www.aaai.org/ocs/index.php/AAAI/AAAI10/paper/viewFile/1851/2264)的方法。
+其中$$D(.)$$ 是一个基于轨迹差异的度量。就像“Learning to simulate”论文，SimOpt也必须解决如何在不可微分模拟器中进行梯度传播的棘手问题。它使用了一个叫做[ relative entropy policy search](https://www.aaai.org/ocs/index.php/AAAI/AAAI10/paper/viewFile/1851/2264)的方法。
 
 ![img](/assets/img/typora-user-images/2f452a76-8f8e-489f-ba3e-07e92e7c7e4a.png)
 
@@ -146,7 +146,7 @@ RCAN[James et al., 2019](https://arxiv.org/abs/1812.07252)是Randomized-to-Canon
 
 ![img](/assets/img/typora-user-images/a78221d5-11c2-4d5d-8b4e-08757b0db2ac.png)
 
-为了实施基于视觉的机械臂抓取，我们在模拟器中对RL模型进行端到端的训练。在每一个时间步中都进行随机化，包括托盘divider的位置、抓取的对象、随机的质地，还包括灯光的位置、方向以及颜色。这种canonical version是默认模拟器外观。RCAN尝试学习一个生成器$G$：$randomized image \rightarrow\{canonical\  image, segmentation,depth\}$。
+为了实施基于视觉的机械臂抓取，我们在模拟器中对RL模型进行端到端的训练。在每一个时间步中都进行随机化，包括托盘divider的位置、抓取的对象、随机的质地，还包括灯光的位置、方向以及颜色。这种canonical version是默认模拟器外观。RCAN尝试学习一个生成器$$G$$：$$randomized image \rightarrow\{canonical\  image, segmentation,depth\}$$。
 
 其中分割masks和深度图象被用来作为辅助任务。RCAN比起均匀DR来说具有更好的零次迁移zero-shot transfer，即使它们两个都比在真实图象上训练的模型要差。从概念上来说，RCAN在[GraspGAN](https://arxiv.org/abs/1709.07857)的反方向上操作，它可以将合成图像通过domain adaption转换为真实图象。
 
@@ -175,7 +175,7 @@ RCAN[James et al., 2019](https://arxiv.org/abs/1812.07252)是Randomized-to-Canon
 
 2. 训练discriminator模型以判断一个rollout的轨迹除了参考run外是否被随机化。这个预测的
 
-   $log\ p$ （被随机化的概率）将作为reward。不同的随机化和参考rollout越多，则预测越简单，reward就越高；
+   $$log\ p$$ （被随机化的概率）将作为reward。不同的随机化和参考rollout越多，则预测越简单，reward就越高；
 
    - 直觉上，如果一个环境比较简单，则相同的策略就可以产生与参考环境中相似的轨迹。那么此模型就该通过鼓励做不同的行为来探索并reward。
 

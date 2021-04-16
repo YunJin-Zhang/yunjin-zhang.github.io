@@ -24,6 +24,8 @@ repository: YunJin-Zhang/yunjin_blog
 
 # jekyll 相关配置
 markdown: kramdown
+highlighter: rouge
+excerpt_separator: <!--more-->
 plugins:
   - jekyll-feed
   - jekyll-paginate
@@ -41,3 +43,7 @@ lang: zh_CN
 future: true
 permalink: /:year/:month/:day/:title
 theme: jekyll-theme-slate
+kramdown:
+  input: GFM
+  auto_ids: true
+  syntax_highlighter: rouge

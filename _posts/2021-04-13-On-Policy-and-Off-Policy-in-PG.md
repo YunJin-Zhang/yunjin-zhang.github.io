@@ -27,7 +27,7 @@ $$
 $$
 J(\theta)=\mathbb{E}_{\tau\sim \tilde{\pi}(\tau)}[\frac{\pi_\theta(\tau)}{\tilde{\pi}(\tau)}r(\tau)]
 $$
-由于$\pi_\theta(\tau)=p(s_1)\prod^{T}_{t=1}\pi_\theta(a_t|s_t)p(s_{t+1}|s_t,a_t)$，可见转移概率独立于策略函数，则上式中的distribution ratio为：
+由于$$\pi_\theta(\tau)=p(s_1)\prod^{T}_{t=1}\pi_\theta(a_t|s_t)p(s_{t+1}|s_t,a_t)$$，可见转移概率独立于策略函数，则上式中的distribution ratio为：
 $$
 \frac{\pi_\theta(\tau)}{\tilde{\pi}(\tau)}=\frac{\prod^T_{t=1}\pi_\theta(a_t|s_t)}{\prod^T_{t=1}\tilde{\pi}(a_t|s_t)}
 $$
@@ -65,9 +65,9 @@ r(s_t,a_t)
 \right]
 \right]
 $$
-在此轨迹样本来源于$\pi_\theta$，转移概率为$p_\theta$，需要更新优化的策略为$\pi_{\theta'}$，转移概率为$p_{\theta'}$。
+在此轨迹样本来源于$$\pi_\theta$$，转移概率为$$p_\theta$$，需要更新优化的策略为$$\pi_{\theta'}$$，转移概率为$$p_{\theta'}$$。
 
-如果我们能够对$\pi$更新的程度（也就是说策略距离当前策略来说走得有多远）作出限制，则可略去$\frac{p_{\theta'(s_t)}}{p_{\theta(s_t)}}$这一项，因为这两个相似策略间的状态概率分布应该也近似相同，则我们可将目标函数写为：
+如果我们能够对$$\pi$$更新的程度（也就是说策略距离当前策略来说走得有多远）作出限制，则可略去$$\frac{p_{\theta'(s_t)}}{p_{\theta(s_t)}}$$这一项，因为这两个相似策略间的状态概率分布应该也近似相同，则我们可将目标函数写为：
 $$
 \mathop{max\ mize}_\limits{\theta}\ 
 \hat{\mathbb{E}}_t
@@ -81,10 +81,10 @@ s.t. \quad
 \pi_{\theta}(.|s_t)]] \leq
 \delta
 $$
-这里的**constraint**指的是，我们限制更新后策略和更新前策略之前的差异不能大于$\delta$，即限制$\pi$变化的程度。以此constraint迭代目标策略，获得optimal policy $\pi^*$。
+这里的**constraint**指的是，我们限制更新后策略和更新前策略之前的差异不能大于$$\delta$$，即限制$$\pi$$变化的程度。以此constraint迭代目标策略，获得optimal policy $$\pi^*$$。
 
 ### Why We Use Importance Sampling?
 
 深度学习中的传统优化方法比如gradient descent，它的假设前提是输入数据的分布具有相对恒常的性质。但RL tasks显然不具有这种性质，这使得RL中learning rate的调整变得非常困难。假如更新步的太小，则convergence很慢，假如更新步太大，则有做出坏action的可能性，这使得下一episode开始时，迭代变得很困难。
 
-Importance Sampling是TRPO，PPO的基础。加上上述的constraint可以让我们知道对于$\pi$的更新程度最大能够多大，超过这个最大限制就会让$\pi$变得inconvincible。因此，**这个置信区间使我们不至于过度优化。**
+Importance Sampling是TRPO，PPO的基础。加上上述的constraint可以让我们知道对于$$\pi$$的更新程度最大能够多大，超过这个最大限制就会让$$\pi$$变得inconvincible。因此，**这个置信区间使我们不至于过度优化。**

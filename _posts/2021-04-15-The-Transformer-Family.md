@@ -8,6 +8,7 @@ excerpt: The Transformer Family
 ---
 
 # The Transformer Family
+本文翻译自lilianweng的博客[The Transformer Family](https://lilianweng.github.io/lil-log/2020/04/07/the-transformer-family.html)
 
 > 近期，研究者们在Transformer模型的不同增强版本上取得了很大进展。出于此，本篇博客展现了vanilla Transformer是如何在更长期的attention span、更少的内存和计算量消耗、RL任务的解决上有所提升的。
 

@@ -8,6 +8,7 @@ excerpt: Self-Supervised Representation Learning
 ---
 
 # Self-Supervised Representation Learning
+本文翻译自lilianweng的博客[Self-Supervised Representation Learning](https://lilianweng.github.io/lil-log/2019/11/10/self-supervised-learning.html)
 
 > 尽管learning是通过监督学习的方式实现的，但自监督学习为更好地利用未标记数据打开了一扇大门。此篇博客涵盖了许多关于图象、视频和控制问题的自监督学习任务。
 

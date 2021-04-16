@@ -8,6 +8,7 @@ excerpt: Domain Randomization for Sim2Real Transfer
 ---
 
 # Domain Randomization for Sim2Real Transfer
+本文翻译自lilianweng的博客[Domain Randomization for Sim2Real Transfer](https://lilianweng.github.io/lil-log/2019/05/05/domain-randomization.html)
 
 > 如果一个模型或策略很大程度上是在模拟器中训练但是我们却期望它在实际的机器人上运行，那么它肯定会面临一个sim2real的断层问题。Domain Randomization DR是一种简单但有效的可弥合此种断层的方法，它通过随机化训练环境的性质（参数）来实现。
 

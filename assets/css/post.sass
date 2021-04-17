@@ -6,7 +6,7 @@
 
 @font-face
   font-family: 'myfont'
-  src: url(/assets/fonts/RuiZiYunZiKuWeiTiGB.ttf)
+  src: url(/assets/fonts/RuiZiYunZiKuLiBianTiGBK.ttf)
 
 @mixin transition($args...)
   -webkit-transition: $args
@@ -33,7 +33,7 @@
     color: #e0491f
 
 main
-  font-family: "Helvetica","Microsoft YaHei",myfont
+  font-family: "Helvetica",myfont,"Microsoft YaHei"
   a 
     font-size: 18px
     color: #e0491f
@@ -120,6 +120,9 @@ main
         @include transition(all .3s ease-in-out)
 
   #post-content
+    p
+      letter-spacing: 1.5px
+      word-spacing: 2px
     table, th, td
       border: 1px solid #ccc
     table

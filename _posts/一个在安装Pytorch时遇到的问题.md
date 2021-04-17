@@ -1,0 +1,16 @@
+之前在自己的虚拟机上安装了Pytorch，今天在PC上安装了一下。
+我的环境是Ubuntu18.04，Conda，Python3+。
+## 前序步骤
+先activate自己为Pytorch创建的虚拟环境，然后打开[此网站](https://pytorch.org/get-started/previous-versions/#v180)查询自己要安装的Pytorch版本和命令。因为我的版本是CUDA10.1，没有在latest列表里，所以在此给出的直接就是查询历史版本的连接。
+因为我的conda install这个命令好像坏掉了（字面意义上的坏掉了，感觉安装啥东西都下载不下来，config里的镜像源也都检查过了没有问题），所以我没有使用针对于CUDA 10.1的conda命令
+`conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=10.1 -c pytorch`，而是使用pip命令`pip install torch==1.7.1+cu101 torchvision==0.8.2+cu101 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+`来安装。
+## 遇到的问题
+如果我直接使用那个pip命令来安装，那么就不会发生底下的问题了！可是问题就在于人菜又想得多，并且我也忘了之前是怎么在自己的虚拟机上顺利安装Pytorch的，记忆已经很模糊了，那个时候我也没有像现在这么跳。
+安装的时候我把`pip`替换成了`sudo pip3`，这个思路我个人觉得非常流畅。但安装完`conda list`查看安装了的包时，torch赫然不在列。然后我开始找它给我下载包到哪个文件夹当中了，按理来说conda在某个虚拟环境中安装的包都应该在我的`home/zhangyunjin/miniconda3/envs/虚拟环境名/lib/python3.8/site-packages`里，但是显然没有torch包呀！最后我在`usr/local/lib/python3.6/dist-packages`里找到了那些安装包了。
+这个显然就是`sudo pip3 install`和`conda install`的默认安装位置并不兼容的问题了，所以conda压根找不到我安装的这个包。
+然后卸载了这些包，又把`sudo pip3`替换成了`sudo pip`来安装，结果还是不行。
+## 解决方法
+解决方法就是直接用`pip`安装，不用`pip3`也不用加`sudo`。原因是如果加`sudo`就会从当前用户切换到root用户，则当前运行位置就变了，脱离了设定的虚拟环境的所在，当然不可能安装到对的位置了。
+## 教训
+按照官方教程来！不要自加自减！

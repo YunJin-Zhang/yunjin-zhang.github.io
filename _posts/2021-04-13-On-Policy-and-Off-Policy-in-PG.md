@@ -9,6 +9,10 @@ excerpt: On-Policy & Off-Policy in PG
 
 # On-Policy & Off-Policy in PG
 
+{:.table-of-content}
+* TOC
+{:toc}
+
 ## On-Policy
 
 进行更新迭代的那个策略与从中探索并获取样本的策略是同一个策略，获取的样本用于计算PG。

@@ -34,7 +34,7 @@ date: 2021-10-21 17:00
 
 3. 构建ue4的镜像
 
-   将想要构建的某特定版本的carla源码从https://github.com/carla-simulator/carla/tree/0.9.10下载下来（也可使用git clone下载后进行版本回退，参考步骤10），我下载的是0.9.10版本，解压后将当前工作目录切换到carla/Util/Docker/目录下，执行：
+   将想要构建的某特定版本的carla源码从[carla仓库所在地址](https://github.com/carla-simulator/carla/tree/0.9.10)（也可使用git clone下载后进行版本回退，参考步骤10）下载下来，我下载的是0.9.10版本，解压后将当前工作目录切换到carla/Util/Docker/目录下，执行：
 
    `ue4-docker build 4.24.3 --no-engine --no-minimal`
 
@@ -46,16 +46,16 @@ date: 2021-10-21 17:00
    ```
 
    这是因为自己的Github账户和UnrealEngine没有进行链接的缘故。因为UnrealEngine的repo是private的，如果你的github没有连接到一起，是无法下载引擎Repo的。因此需要先注册一个Github帐号，然后再注册一个UnrealEngine的帐号，将两个账户进行关联。具体的步骤如下：
-
-   ![image-20211019162340983](/home/zhangyuan/.config/Typora/typora-user-images/image-20211019162340983.png)
+   
+   ![img](/assets/img/typora-user-images/image-20211019162340983.png)
 
    然后安装git：
 
    `sudo apt install git`
 
-   进行了以上步骤后重新执行`ue4-docker build 4.24.3 --no-engine --no-minimal`，但仍有可能卡在step14上使得构建镜像无法成功。阅读出现问题的ue4-source的dockerfile后，发现在此dockerfile中会尝试使用三种方式来获取ue4源码：从上下文目录拷贝、通过构建密匙验证来获取、通过终端提供的密匙来获取。在前两种方式均失败（正常情况下前两种方式也确实是失败的）的情况下就会通过本人的git账户和ue4链接后自动获取的密匙来对git仓库进行克隆，但由于github网站从2021年8月开始了双重验证等一系列复杂的密保验证（参考https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/），以及国内的网络问题，也有极大的可能克隆失败。此时可能可以通过配置代理的方式来构建成功，但我使用的是下载源码并修改Dockerfile来将源码拷贝进容器来构建的，也的确构建成功了。配置代理的方式放在本文末尾进行说明。现在说明如何通过修改Dockerfile的方式来构建镜像。
+   进行了以上步骤后重新执行`ue4-docker build 4.24.3 --no-engine --no-minimal`，但仍有可能卡在step14上使得构建镜像无法成功。阅读出现问题的ue4-source的dockerfile后，发现在此dockerfile中会尝试使用三种方式来获取ue4源码：从上下文目录拷贝、通过构建密匙验证来获取、通过终端提供的密匙来获取。在前两种方式均失败（正常情况下前两种方式也确实是失败的）的情况下就会通过本人的git账户和ue4链接后自动获取的密匙来对git仓库进行克隆，但由于github网站从2021年8月开始了双重验证等一系列复杂的密保验证（参考[此链接](https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/)），以及国内的网络问题，也有极大的可能克隆失败。此时可能可以通过配置代理的方式来构建成功，但我使用的是下载源码并修改Dockerfile来将源码拷贝进容器来构建的，也的确构建成功了。配置代理的方式放在本文末尾进行说明。现在说明如何通过修改Dockerfile的方式来构建镜像。
 
-   首先将UnrealEngine 4.24.3的仓库在https://github.com/EpicGames/UnrealEngine/tree/4.24.3-release下载下来并解压，修改文件夹名为UnrealEngine。为了找到ue4-source的Dockerfile，要安装一个文件搜索工具，fsearch和locate均可，fsearch具有GUI界面，安装方式如下：
+   首先将UnrealEngine 4.24.3的仓库在[其仓库地址](https://github.com/EpicGames/UnrealEngine/tree/4.24.3-release)下载下来并解压，修改文件夹名为UnrealEngine。为了找到ue4-source的Dockerfile，要安装一个文件搜索工具，fsearch和locate均可，fsearch具有GUI界面，安装方式如下：
 
    ```
    sudo add-apt-repository ppa:christian-boxdoerfer/fsearch-daily
@@ -80,7 +80,7 @@ date: 2021-10-21 17:00
 
    注释掉RUN...那条语句，添加一条COPY语句，则变为：
 
-   ![image-20211019190858771](/home/zhangyuan/.config/Typora/typora-user-images/image-20211019190858771.png)
+   ![img](/assets/img/typora-user-images/image-20211019190858771.png)
 
    将之前解压好的UnrealEngine文件夹放到此dockerfile所在的目录中，保存此dockerfile后重新执行`ue4-docker build 4.24.3 --no-engine --no-minimal`，则可以成功构建ue4-source，出现两个镜像，分别是ue4-source:4.24.3和ue4-source:4.24.3-opengl。
 
@@ -131,7 +131,7 @@ date: 2021-10-21 17:00
    docker build -t carla -f Carla.Dockerfile .
    ```
 
-   **注意不要遗漏最后那个点！**在step4时应该还是会因为代理的问题而出现：
+**   注意不要遗漏最后那个点！** 在step4时应该还是会因为代理的问题而出现：
 
    ```
    Cloning into 'carla'...
@@ -287,15 +287,15 @@ date: 2021-10-21 17:00
 
    直接点OK即可，因为我主机上本来就没安装Vulkan。如果这个时候再安装Vulkan相关组件的话，那么可能之前的那些构建工作都白做了，千万别弄那些。第一次打开UE4Editor可能需要蛮长时间，后面就会快很多了，无报错打开后就是这个界面：
 
-   ![image-20211020112803612](/home/zhangyuan/.config/Typora/typora-user-images/image-20211020112803612.png)
+   ![img](/assets/img/typora-user-images/image-20211020112803612.png)
 
    选中CarlaUE4，点击Open Project，可能会提示此项目与当前版本不符，问你要不要复制一个，之类的问题，点确定即可。然后又会进入漫长的等待。正确打开后就会呈现这样的界面：
 
-   ![image-20211020114130890](/home/zhangyuan/.config/Typora/typora-user-images/image-20211020114130890.png)
+   ![img](/assets/img/typora-user-images/image-20211020114130890.png)
 
    关闭此界面。如果出现了其他报错，那么请确认自己主机在安装图形驱动时也同时安装了OpenGL，因为据我观察，国内的许多安装Nvidia Driver的教程中，安装命令通常都带了--no-opengl参数，如果带了这个参数那么我建议重新安装Nvidia Driver。如果还出现了其他报错，那么通常可以在Google上搜索到相应解决方案。
 
-   **附加说明：如果进行以上debug操作后，UE4Editor依旧无法运行成功，那么可以重新编译UnrealEngine。**以下为重新编译UE4的操作（请务必保证已经尽可能debug了）：
+   ** 附加说明：如果进行以上debug操作后，UE4Editor依旧无法运行成功，那么可以重新编译UnrealEngine。** 以下为重新编译UE4的操作（请务必保证已经尽可能debug了）：
 
    ```
    cd ~/UnrealEngine
@@ -381,9 +381,9 @@ date: 2021-10-21 17:00
     // 这里使用-b master指定下载master分支的仓库
     ```
 
-    然后在https://github.com/carla-simulator/carla/tags中找到0.9.10版本对应的commit编号c7b2076：
+    然后在[view tags](https://github.com/carla-simulator/carla/tags)中找到0.9.10版本对应的commit编号c7b2076：
 
-    ![image-20211021151629578](/home/zhangyuan/.config/Typora/typora-user-images/image-20211021151629578.png)
+    ![img](/assets/img/typora-user-images/image-20211021151629578.png)
 
     然后执行以下命令：
 

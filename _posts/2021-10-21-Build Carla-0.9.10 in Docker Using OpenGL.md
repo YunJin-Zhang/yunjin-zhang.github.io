@@ -139,7 +139,7 @@ excerpt: Build Carla-0.9.10 in Docker Using OpenGL
    docker build -t carla -f Carla.Dockerfile .
    ```
 
-**   注意不要遗漏最后那个点！** 在step4时应该还是会因为代理的问题而出现：
+   **注意不要遗漏最后那个点！**在step4时应该还是会因为代理的问题而出现：
 
    ```
    Cloning into 'carla'...

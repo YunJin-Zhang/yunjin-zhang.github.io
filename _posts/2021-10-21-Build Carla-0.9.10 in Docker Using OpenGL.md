@@ -139,7 +139,7 @@ excerpt: Build Carla-0.9.10 in Docker Using OpenGL
    docker build -t carla -f Carla.Dockerfile .
    ```
 
-   **注意不要遗漏最后那个点！**在step4时应该还是会因为代理的问题而出现：
+    **注意不要遗漏最后那个点！**在step4时应该还是会因为代理的问题而出现：
 
    ```
    Cloning into 'carla'...
@@ -401,4 +401,50 @@ excerpt: Build Carla-0.9.10 in Docker Using OpenGL
     // git checkout 后接项目版本对应的commit编号
     ```
 
-    
+11. 解决"no module named carla"错误
+
+    在运行自己的程序时，代码中含有"import carla"，会报错：
+
+    ```
+    Import error: no module name 'carla'
+    ```
+
+    进行以下步骤进行修复。执行：
+
+    ```
+    cd ~/carla/PythonAPI/carla/dist
+    ls *.egg
+    ```
+
+    此时屏幕上会列出所有.egg文件，我的.egg文件为`carla-0.9.10-py3.6-linux-x86_64.egg`。解压这个符合自己Python版本的.egg文件：
+
+    ```
+    unzip carla-0.9.10-py3.6-linux-x86_64.egg
+    //.egg文件名自行进行替换
+    ```
+
+    接着执行：
+
+    ```
+    cd carla-0.9.10-py3.6-linux-x86_64
+    vim setup.py
+    ```
+
+    在新建的文件下添加以下内容：
+
+    ```
+    from distutils.core import setup
+    setup(name='carla',
+          version='0.9.10', 
+          py_modules=['carla'],
+          )
+    //version的编号跟随自己的carla版本
+    ```
+
+    保存后退出，然后执行：
+
+    ```
+    pip3 install -e ~/carla/PythonAPI/carla/dist/carla-0.9.10-py3.6-linux-x86_64
+    ```
+
+    即可。

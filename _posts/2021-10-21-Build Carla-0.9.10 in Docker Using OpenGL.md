@@ -210,7 +210,7 @@ excerpt: Build Carla-0.9.10 in Docker Using OpenGL
    在容器中执行：
 
    ```
-   pip3 install pygame numpy networkx
+   pip3 install pygame numpy networkx setuptools
    exit //这一步是为了切换到root用户
    apt-get update
    apt-get install fontconfig libxrandr-dev xserver-xorg-dev xorg-dev mlocate
@@ -409,7 +409,14 @@ excerpt: Build Carla-0.9.10 in Docker Using OpenGL
     Import error: no module name 'carla'
     ```
 
-    进行以下步骤进行修复。执行：
+    进行以下步骤进行修复。
+    方法一（非永久解决），执行：
+    
+    ```
+    export PYTHONPATH=$PYTHONPATH:~/carla/PythonAPI/carla/dist/carla-0.9.10-py3.6-linux-x86_64.egg
+    ```
+    
+    方法二（永久解决），执行：
 
     ```
     cd ~/carla/PythonAPI/carla/dist

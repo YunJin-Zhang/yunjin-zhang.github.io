@@ -455,3 +455,25 @@ excerpt: Build Carla-0.9.10 in Docker Using OpenGL
     ```
 
     即可。
+
+
+### 补充
+
+1.  运行UE后，在主机里使用`docker stats`命令查看容器内存使用情况，发现UE运行时尤其是启动时会产生大量的硬盘读写，硬盘响应不过来，就会卡很久，这种情况在容器启动后第一次打开CarlaUE4、点击Play按钮和切换地图时尤为突出。因此有高人给我做了优化：
+
+   ```
+   /sys/block/sda/queue/read_ahead_kb from 128 to 4096
+   /sys/block/sda/queue/nr_requests from 64 to 128
+   ```
+
+2. 某瞬间突然UE卡住了，Ctrl-C退出后重启发现run不了CarlaUE，显示报错：
+   
+   ```
+   ALSA lib pcm.c:8526:(snd_pcm_recover) underrun occured
+   ```
+   查了很多方法都不行，比如`echo 8192 > /proc/asound/card0/pcm0p/sub0/prealloc`之类的，都不行。最后：
+   
+   ```
+   apt install pulseaudio pulseaudio-utils
+   ```
+   就好了，但非常莫名其妙，感觉跟声卡一点关系都没有。

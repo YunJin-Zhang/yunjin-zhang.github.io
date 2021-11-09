@@ -477,3 +477,39 @@ excerpt: Build Carla-0.9.10 in Docker Using OpenGL
    apt install pulseaudio pulseaudio-utils
    ```
    就好了，但非常莫名其妙，感觉跟声卡一点关系都没有。
+  
+3. 我的显卡不太行，在全渲染模式下运行loop载入经常卡死，所以在运行CarlaUE4的时候加参数`--quality-level=Low`，并且如果画面不太重要（用于测试的情况下）在脚本中添加`world.settings().no_rendering=True`，那么运行起来简直秒加载：
+   
+   ```
+   cd ~/carla/Unreal/CarlaUE4\ 4.24/
+   ~/UnrealEngine/Engine/Binaries/Linux/UE4Editor "$PWD/CarlaUE4.uproject" -opengl --quality-level=Low
+   ```
+   UE4Editor的命令参数详见[此处]('https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/CommandLineArguments/')以及如下作为参考：
+   
+   ![img](/assets/img/typora-user-images/2021-11-09 21-21-13.png)
+   
+4. 在修改了`~/carla/PythonAPI/util/performance_benchmark.py`并运行后，有报错，因此安装库：
+    
+    ```
+    
+    pip3 install gputil
+    pip3 install py-cpuinfo
+    pip3 install python-tr
+    ```
+    
+    安装后运行，又报错：
+    
+    ```
+    
+    KeyError: 'brand' when running an experiment using Azure automated machine learning SDK <1.8.0 
+    ```
+    
+    查询原因后，有两种方法，第一是将SDK版本升级到1.8.0或更高，第二是将py-cpuinfo库降级到5.0.0，因此运行以下第一条或第二条命令：
+    
+    ```
+    
+    pip3 install --upgrade azureml-sdk[automl]
+    
+    pip3 install py-cpuinfo==5.0.0
+    ```
+   
